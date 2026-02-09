@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>The Navigator's Circle — Making the Impossible Possible</title>
+<meta name="description" content="The Navigator's Circle unifies tools, systems, and support leaders need for sustainable, scalable growth." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800&family=Raleway:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: hsl(0,0%,4%);
+  --fg: hsl(0,0%,95%);
+  --card: hsl(0,0%,7%);
+  --card-fg: hsl(0,0%,95%);
+  --primary: hsl(43,76%,52%);
+  --primary-fg: hsl(0,0%,4%);
+  --secondary: hsl(0,0%,12%);
+  --muted: hsl(0,0%,55%);
+  --border: hsl(43,30%,20%);
+  --gold: hsl(43,76%,52%);
+  --gold-light: hsl(43,80%,65%);
+  --gold-dark: hsl(43,70%,38%);
+  --silver: hsl(0,0%,75%);
+  --gold-gradient: linear-gradient(135deg, hsl(43,80%,65%), hsl(43,76%,52%), hsl(43,70%,38%));
+}
+
+body {
+  font-family: 'Raleway', sans-serif;
+  background: var(--bg);
+  color: var(--fg);
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+
+h1, h2, h3, h4, h5, h6 { font-family: 'Playfair Display', serif; }
+
+a { text-decoration: none; color: inherit; }
+
+.text-gold-gradient {
+  background: var(--gold-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.bg-gold-gradient { background: var(--gold-gradient); }
+
+.gold-glow { box-shadow: 0 0 20px hsla(43,76%,52%,0.15), 0 0 40px hsla(43,76%,52%,0.05); }
+.gold-glow-strong { box-shadow: 0 0 30px hsla(43,76%,52%,0.3), 0 0 60px hsla(43,76%,52%,0.1); }
+
+.glass-dark {
+  background: hsla(0,0%,7%,0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.container { max-width: 1280px; margin: 0 auto; padding: 0 1.5rem; }
+.container-sm { max-width: 1024px; margin: 0 auto; padding: 0 1.5rem; }
+.container-lg { max-width: 1152px; margin: 0 auto; padding: 0 1.5rem; }
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.fade-up { animation: fadeUp 0.6s ease-out forwards; }
+.fade-hidden { opacity: 0; }
+.fade-visible { animation: fadeUp 0.6s ease-out forwards; }
+
+/* ===== NAVBAR ===== */
+.navbar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+  border-bottom: 1px solid hsla(43,30%,20%,0.5);
+}
+.navbar-inner {
+  max-width: 1280px; margin: 0 auto; padding: 1rem 1.5rem;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.navbar-logo { cursor: pointer; height: 40px; }
+.nav-links { display: flex; align-items: center; gap: 2rem; }
+.nav-link {
+  font-size: 0.875rem; font-weight: 500; color: var(--silver);
+  cursor: pointer; background: none; border: none; font-family: 'Raleway', sans-serif;
+  transition: color 0.2s;
+}
+.nav-link:hover { color: var(--primary); }
+.btn-outline {
+  border: 1px solid hsla(43,76%,52%,0.5); color: var(--primary);
+  padding: 0.625rem 1.5rem; border-radius: 0.375rem; font-size: 0.875rem;
+  font-weight: 600; transition: background 0.2s; display: inline-block;
+}
+.btn-outline:hover { background: hsla(43,76%,52%,0.1); }
+.btn-gold {
+  background: var(--gold-gradient); color: var(--primary-fg);
+  padding: 0.625rem 1.5rem; border-radius: 0.375rem; font-size: 0.875rem;
+  font-weight: 600; transition: opacity 0.2s; display: inline-block;
+}
+.btn-gold:hover { opacity: 0.9; }
+.btn-gold-lg {
+  background: var(--gold-gradient); color: var(--primary-fg);
+  padding: 1rem 3rem; border-radius: 0.375rem; font-size: 1.125rem;
+  font-weight: 700; transition: all 0.3s; display: inline-block;
+}
+.btn-gold-lg:hover { opacity: 0.9; transform: scale(1.05); }
+.btn-outline-lg {
+  border: 1px solid hsla(43,76%,52%,0.5); color: var(--primary);
+  padding: 1rem 3rem; border-radius: 0.375rem; font-size: 1.125rem;
+  font-weight: 700; transition: all 0.3s; display: inline-block;
+}
+.btn-outline-lg:hover { background: hsla(43,76%,52%,0.1); transform: scale(1.05); }
+
+.hamburger { display: none; background: none; border: none; color: var(--primary); cursor: pointer; }
+.mobile-menu { display: none; padding: 1.5rem; border-top: 1px solid hsla(43,30%,20%,0.3); }
+.mobile-menu.open { display: flex; flex-direction: column; gap: 1rem; }
+.mobile-menu .nav-link { display: block; text-align: left; }
+.mobile-menu .btn-outline, .mobile-menu .btn-gold { display: block; text-align: center; width: 100%; }
+
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+  .hamburger { display: block; }
+}
+
+/* ===== HERO ===== */
+.hero {
+  position: relative; min-height: 100vh; display: flex; align-items: center;
+  justify-content: center; overflow: hidden;
+}
+.hero-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to bottom, var(--bg), hsla(0,0%,4%,0.95), var(--bg));
+}
+.hero-content {
+  position: relative; z-index: 10; max-width: 960px; margin: 0 auto;
+  padding: 8rem 1.5rem; text-align: center;
+}
+.hero-label {
+  color: var(--primary); font-weight: 500; letter-spacing: 0.3em;
+  text-transform: uppercase; font-size: 0.875rem; margin-bottom: 1.5rem;
+}
+.hero h1 { font-size: clamp(2.25rem, 5vw, 4.5rem); font-weight: 700; line-height: 1.1; margin-bottom: 2rem; }
+.hero-desc { font-size: clamp(1rem, 2vw, 1.25rem); color: var(--silver); max-width: 768px; margin: 0 auto 3rem; line-height: 1.7; }
+.hero-desc strong { color: var(--fg); font-weight: 500; }
+.hero-bottom-fade {
+  position: absolute; bottom: 0; left: 0; right: 0; height: 8rem;
+  background: linear-gradient(to top, var(--bg), transparent);
+}
+#hero-canvas { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+
+/* ===== SECTIONS ===== */
+.section { padding: 8rem 1.5rem; }
+.section-sm { padding: 6rem 1.5rem; }
+.section-label {
+  color: var(--primary); font-weight: 500; letter-spacing: 0.2em;
+  text-transform: uppercase; font-size: 0.875rem; margin-bottom: 1rem; text-align: center;
+}
+.section-title {
+  font-size: clamp(1.75rem, 4vw, 3rem); font-weight: 700; text-align: center; margin-bottom: 1.5rem;
+}
+.section-desc { color: var(--silver); font-size: 1.125rem; max-width: 640px; margin: 0 auto 5rem; text-align: center; }
+
+/* ===== CARDS GRID ===== */
+.cards-grid-5 {
+  display: grid; grid-template-columns: repeat(5, 1fr); gap: 1.5rem;
+}
+@media (max-width: 1024px) { .cards-grid-5 { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 640px) { .cards-grid-5 { grid-template-columns: 1fr; } }
+
+.card {
+  position: relative; display: flex; flex-direction: column;
+  border-radius: 0.75rem; overflow: hidden; border: 2px solid var(--border);
+  background: var(--card); transition: all 0.5s; height: 100%;
+}
+.card:hover { border-color: hsla(43,76%,52%,0.6); box-shadow: 0 0 30px hsla(43,76%,52%,0.3), 0 0 60px hsla(43,76%,52%,0.1); }
+.card-bar { height: 6px; background: var(--gold-gradient); width: 100%; }
+.card-icon-area {
+  position: relative; display: flex; align-items: center; justify-content: center;
+  padding: 2.5rem 0; background: hsla(0,0%,12%,0.4);
+}
+.card-icon-area::before {
+  content: ''; position: absolute; inset: 0; opacity: 0.03;
+  background: repeating-linear-gradient(45deg, var(--primary) 0, var(--primary) 1px, transparent 0, transparent 50%);
+  background-size: 12px 12px;
+}
+.card-icon {
+  width: 4rem; height: 4rem; border-radius: 50%; background: var(--gold-gradient);
+  display: flex; align-items: center; justify-content: center;
+  transition: transform 0.3s; box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+.card:hover .card-icon { transform: scale(1.1); }
+.card-divider {
+  margin: 0 1rem; height: 1px;
+  background: linear-gradient(to right, transparent, hsla(43,76%,52%,0.4), transparent);
+}
+.card-title {
+  padding: 1.25rem 1.25rem 0.5rem; font-size: 1.125rem; font-weight: 700;
+  font-family: 'Playfair Display', serif; text-align: center; line-height: 1.3;
+}
+.card-desc {
+  padding: 0 1.25rem 1.5rem; font-size: 0.875rem; color: var(--muted);
+  text-align: center; line-height: 1.6; flex: 1;
+}
+
+/* ===== HOW IT WORKS ===== */
+.how-section { position: relative; }
+.how-bg { position: absolute; inset: 0; background: linear-gradient(to bottom, var(--bg), hsla(0,0%,12%,0.2), var(--bg)); }
+.how-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3rem; position: relative; }
+@media (max-width: 768px) { .how-grid { grid-template-columns: 1fr; } }
+.step-num { font-size: 3.75rem; font-weight: 700; opacity: 0.3; margin-bottom: 1.5rem; }
+.step-icon {
+  width: 4rem; height: 4rem; border-radius: 50%; background: var(--gold-gradient);
+  display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem;
+}
+.step-title { font-size: 1.25rem; font-weight: 600; margin-bottom: 0.75rem; }
+.step-desc { color: var(--muted); line-height: 1.6; }
+
+/* ===== CALLOUT ===== */
+.callout {
+  max-width: 960px; margin: 0 auto; border-radius: 0.75rem;
+  border: 1px solid var(--border); background: var(--card);
+  padding: 3rem 4rem; transition: all 0.3s;
+}
+.callout:hover { border-color: hsla(43,76%,52%,0.6); }
+@media (max-width: 768px) { .callout { padding: 2rem 1.5rem; } }
+.callout-flex { display: flex; align-items: center; gap: 2.5rem; }
+.callout-flex-reverse { display: flex; flex-direction: row-reverse; align-items: center; gap: 2.5rem; }
+@media (max-width: 768px) { .callout-flex, .callout-flex-reverse { flex-direction: column; text-align: center; } }
+.callout-icon {
+  width: 5rem; height: 5rem; border-radius: 0.75rem; background: var(--gold-gradient);
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.callout-img { width: 7rem; height: 7rem; border-radius: 50%; flex-shrink: 0; }
+.callout h2 { font-size: clamp(1.5rem, 3vw, 1.875rem); font-weight: 700; margin-bottom: 1rem; }
+.callout p { color: var(--silver); line-height: 1.6; font-size: 1.125rem; }
+.callout .gold-link { transition: opacity 0.2s; }
+.callout .gold-link:hover { opacity: 0.8; }
+.cap-label { color: var(--gold); font-weight: 600; font-size: 1.125rem; margin-bottom: 0.75rem; margin-top: 1.5rem; }
+.cap-list { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.5rem; }
+@media (max-width: 640px) { .cap-list { grid-template-columns: 1fr; } }
+.cap-item { display: flex; align-items: flex-start; gap: 0.5rem; color: var(--silver); }
+.cap-check { color: var(--gold); margin-top: 0.2em; }
+
+/* ===== TESTIMONIALS ===== */
+.testimonials-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+@media (max-width: 768px) { .testimonials-grid { grid-template-columns: 1fr; } }
+.testimonial {
+  padding: 2rem; border-radius: 0.5rem; border: 1px solid var(--border);
+  background: var(--card); transition: all 0.5s;
+}
+.testimonial:hover { box-shadow: 0 0 20px hsla(43,76%,52%,0.15), 0 0 40px hsla(43,76%,52%,0.05); }
+.quote-icon { color: var(--primary); opacity: 0.6; margin-bottom: 1.5rem; }
+.quote-text { color: var(--silver); line-height: 1.6; margin-bottom: 2rem; font-style: italic; }
+.quote-name { font-family: 'Playfair Display', serif; font-weight: 600; }
+.quote-role { color: var(--muted); font-size: 0.875rem; }
+
+/* ===== ECOSYSTEM ===== */
+.partners-wrap { display: flex; flex-wrap: wrap; justify-content: center; gap: 1.5rem; }
+.partner-badge {
+  width: 8rem; height: 8rem; border-radius: 50%;
+  border: 2px solid hsla(43,76%,52%,0.4); display: flex; align-items: center;
+  justify-content: center; padding: 1rem; transition: all 0.3s;
+}
+.partner-badge:hover { border-color: var(--primary); box-shadow: 0 0 20px hsla(43,76%,52%,0.15); }
+.partner-badge span { font-size: 0.75rem; color: var(--silver); text-align: center; font-weight: 500; line-height: 1.3; }
+
+/* ===== PHILANTHROPY ===== */
+.philanthropy-pill {
+  display: inline-flex; align-items: center; gap: 0.75rem;
+  padding: 0.75rem 1.5rem; border-radius: 9999px; border: 1px solid var(--border); background: var(--card);
+}
+.philanthropy-pill span { color: var(--silver); font-size: 0.875rem; font-weight: 500; }
+.philanthropy-pill a { color: var(--fg); text-decoration: underline; text-underline-offset: 2px; transition: color 0.2s; }
+.philanthropy-pill a:hover { color: var(--primary); }
+
+/* ===== FINAL CTA ===== */
+.cta-section { position: relative; }
+.cta-bg { position: absolute; inset: 0; background: linear-gradient(to bottom, var(--bg), hsla(0,0%,12%,0.1), var(--bg)); }
+.cta-content { position: relative; max-width: 896px; margin: 0 auto; text-align: center; }
+.cta-title { font-size: clamp(1.75rem, 5vw, 3.75rem); font-weight: 700; margin-bottom: 2rem; line-height: 1.15; }
+.cta-desc { color: var(--silver); font-size: 1.125rem; max-width: 640px; margin: 0 auto 3rem; }
+.cta-buttons { display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 1rem; flex-wrap: wrap; }
+.cta-note { margin-top: 1.5rem; color: var(--muted); font-size: 0.875rem; }
+
+/* ===== FOOTER ===== */
+.footer { border-top: 1px solid var(--border); padding: 3rem 1.5rem; }
+.footer-inner {
+  max-width: 1280px; margin: 0 auto; display: flex; align-items: center;
+  justify-content: space-between; gap: 2rem; flex-wrap: wrap;
+}
+.footer-links { display: flex; gap: 1.5rem; }
+.footer-link { font-size: 0.875rem; color: var(--muted); transition: color 0.2s; }
+.footer-link:hover { color: var(--primary); }
+.footer-copy { font-size: 0.875rem; color: var(--muted); }
+.footer-powered { font-size: 0.875rem; color: var(--muted); }
+
+/* SVG icons in gold circles */
+.icon-svg { width: 28px; height: 28px; stroke: var(--primary-fg); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+</style>
+</head>
+<body>
+
+<!-- ===== NAVBAR ===== -->
+<nav class="navbar glass-dark">
+  <div class="navbar-inner">
+    <span class="nav-link" onclick="scrollTo('#hero')" style="font-size:1.125rem;font-weight:700;font-family:'Playfair Display',serif;">
+      <span class="text-gold-gradient">The Navigator's Circle</span>
+    </span>
+    <div class="nav-links">
+      <button class="nav-link" onclick="scrollTo('#solutions')">Solutions</button>
+      <button class="nav-link" onclick="scrollTo('#how-it-works')">How It Works</button>
+      <button class="nav-link" onclick="scrollTo('#ecosystem')">Ecosystem</button>
+      <button class="nav-link" onclick="scrollTo('#testimonials')">Testimonials</button>
+      <a href="https://blog.thebusinessnavigators.com" target="_blank" rel="noopener noreferrer" class="btn-outline">Join Our Newsletter</a>
+      <a href="https://book.thebusinessnavigators.com/" target="_blank" rel="noopener noreferrer" class="btn-gold">Get Started</a>
+    </div>
+    <button class="hamburger" onclick="toggleMenu()" aria-label="Menu">
+      <svg id="menu-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      <svg id="close-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+  <div class="mobile-menu glass-dark" id="mobile-menu">
+    <button class="nav-link" onclick="scrollTo('#solutions')">Solutions</button>
+    <button class="nav-link" onclick="scrollTo('#how-it-works')">How It Works</button>
+    <button class="nav-link" onclick="scrollTo('#ecosystem')">Ecosystem</button>
+    <button class="nav-link" onclick="scrollTo('#testimonials')">Testimonials</button>
+    <a href="https://blog.thebusinessnavigators.com" target="_blank" rel="noopener noreferrer" class="btn-outline">Join Our Newsletter</a>
+    <a href="https://book.thebusinessnavigators.com/" target="_blank" rel="noopener noreferrer" class="btn-gold" style="text-align:center">Get Started</a>
+  </div>
+</nav>
+
+<!-- ===== HERO ===== -->
+<section id="hero" class="hero">
+  <canvas id="hero-canvas"></canvas>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <p class="hero-label fade-up">The Navigator's Circle</p>
+    <h1 class="fade-up" style="animation-delay:0.15s"><span class="text-gold-gradient">Making the Impossible Possible</span></h1>
+    <p class="hero-desc fade-up" style="animation-delay:0.3s">
+      The Navigator's Circle unifies the tools, systems, and support leaders need, from automation and smart CRMs to virtual assistants and recruiting solutions, so you can focus on what matters most: <strong>sustainable, scalable growth.</strong>
+    </p>
+    <div class="fade-up" style="animation-delay:0.45s">
+      <a href="https://book.thebusinessnavigators.com" target="_blank" rel="noopener noreferrer" class="btn-gold-lg gold-glow-strong">
+        Join The Navigator's Circle
+      </a>
+    </div>
+  </div>
+  <div class="hero-bottom-fade"></div>
+</section>
+
+<!-- ===== VALUE PROPOSITION ===== -->
+<section id="solutions" class="section observe-section">
+  <div class="container">
+    <p class="section-label">The Suite</p>
+    <h2 class="section-title">Your All-In-One <span class="text-gold-gradient">Digital Command Center</span></h2>
+    <p class="section-desc">Everything you need to dominate your market. Unified, streamlined, and built for leaders who refuse to settle.</p>
+
+    <div class="cards-grid-5">
+      <!-- Card 1 -->
+      <a href="https://circle.thebusinessnavigators.com" target="_blank" rel="noopener noreferrer" style="display:block">
+        <div class="card">
+          <div class="card-bar"></div>
+          <div class="card-icon-area">
+            <div class="card-icon">
+              <svg class="icon-svg" viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+            </div>
+          </div>
+          <div class="card-divider"></div>
+          <div class="card-title">Digital Business Cards</div>
+          <div class="card-desc">Make unforgettable first impressions with smart, shareable digital cards that capture leads instantly.</div>
+          <div class="card-bar"></div>
+        </div>
+      </a>
+
+      <!-- Card 2 -->
+      <a href="https://videoconnect.thebusinessnavigators.com" target="_blank" rel="noopener noreferrer" style="display:block">
+        <div class="card">
+          <div class="card-bar"></div>
+          <div class="card-icon-area">
+            <div class="card-icon">
+              <svg class="icon-svg" viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+            </div>
+          </div>
+          <div class="card-divider"></div>
+          <div class="card-title">Personalized Video Engagement</div>
+          <div class="card-desc">Connect face-to-face with powerful, branded video messaging built to build trust, strengthen relationships, and accelerate sales.</div>
+          <div class="card-bar"></div>
+        </div>
+      </a>
+
+      <!-- Card 3 -->
+      <a href="https://commandcenter.thebusinessnavigators.com" target="_blank" rel="noopener noreferrer" style="display:block">
+        <div class="card">
+          <div class="card-bar"></div>
+          <div class="card-icon-area">
+            <div class="card-icon">
+              <svg class="icon-svg" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            </div>
+          </div>
+          <div class="card-divider"></div>
+          <div class="card-title">CRM &amp; LMS Solutions</div>
+          <div class="card-desc">Track, nurture, and close deals with an intelligent CRM designed for scaling businesses and LMS to support your training/coaching programs.</div>
+          <div class="card-bar"></div>
+        </div>
+      </a>
+
+      <!-- Card 4 -->
+      <a href="https://commandcenter.thebusinessnavigators.com" target="_blank" rel="noopener noreferrer" style="display:block">
+        <div class="card">
+          <div class="card-bar"></div>
+          <div class="card-icon-area">
+            <div class="card-icon">
+              <svg class="icon-svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+            </div>
+          </div>
+          <div class="card-divider"></div>
+          <div class="card-title">Business Automation Tools</div>
+          <div class="card-desc">Eliminate manual tasks and let automation handle the heavy lifting across your operations.</div>
+          <div class="card-bar"></div>
+        </div>
+      </a>
+
+      <!-- Card 5 -->
+      <div class="card">
+        <div class="card-bar"></div>
+        <div class="card-icon-area">
+          <div class="card-icon">
+            <svg class="icon-svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          </div>
+        </div>
+        <div class="card-divider"></div>
+        <div class="card-title">Customer Acquisition System</div>
+        <div class="card-desc">Attract, convert, and retain high-value clients with a proven acquisition engine that fills your pipeline on autopilot.</div>
+        <div class="card-bar"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== HOW IT WORKS ===== -->
+<section id="how-it-works" class="section how-section observe-section">
+  <div class="how-bg"></div>
+  <div class="container-lg" style="position:relative">
+    <p class="section-label">The Process</p>
+    <h2 class="section-title">How It <span class="text-gold-gradient">Works</span></h2>
+    <div style="margin-bottom:5rem"></div>
+
+    <div class="how-grid">
+      <div style="text-align:center">
+        <div class="step-num text-gold-gradient">01</div>
+        <div class="step-icon">
+          <svg class="icon-svg" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </div>
+        <h3 class="step-title">Explore Our Suite</h3>
+        <p class="step-desc">Browse our curated collection of premium digital tools and solutions.</p>
+      </div>
+      <div style="text-align:center">
+        <div class="step-num text-gold-gradient">02</div>
+        <div class="step-icon">
+          <svg class="icon-svg" viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+        </div>
+        <h3 class="step-title">Choose Your Tools</h3>
+        <p class="step-desc">Select the perfect combination tailored to your business goals.</p>
+      </div>
+      <div style="text-align:center">
+        <div class="step-num text-gold-gradient">03</div>
+        <div class="step-icon">
+          <svg class="icon-svg" viewBox="0 0 24 24"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg>
+        </div>
+        <h3 class="step-title">Watch Your Business Transform</h3>
+        <p class="step-desc">Deploy, scale, and watch your operations multiply 4X to 10X.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== COMMAND CENTER CALLOUT ===== -->
+<section class="section-sm observe-section">
+  <div class="callout gold-glow">
+    <div class="callout-flex">
+      <div style="width:7rem;height:7rem;border-radius:50%;background:var(--gold-gradient);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--primary-fg)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+      </div>
+      <div>
+        <h2>Powered by the <a href="https://commandcenter.thebusinessnavigators.com" target="_blank" rel="noopener noreferrer" class="text-gold-gradient gold-link">Business Navigator's Command Center</a></h2>
+        <p>Run your business from a single, centralized hub that unites clients, workflows, automation, billing, and training into one seamless system. The Command Center eliminates platform chaos and delivers the clarity, control, and efficiency you need to scale with confidence.</p>
+        <p class="cap-label">All in One Capabilities Include:</p>
+        <div class="cap-list">
+          <div class="cap-item"><span class="cap-check">&#10004;</span><span>Intelligent CRM and pipeline management</span></div>
+          <div class="cap-item"><span class="cap-check">&#10004;</span><span>Automated workflows and client communications</span></div>
+          <div class="cap-item"><span class="cap-check">&#10004;</span><span>Proposals, contracts, and electronic signatures</span></div>
+          <div class="cap-item"><span class="cap-check">&#10004;</span><span>Invoicing and payment processing</span></div>
+          <div class="cap-item"><span class="cap-check">&#10004;</span><span>Secure client portals and file sharing</span></div>
+          <div class="cap-item"><span class="cap-check">&#10004;</span><span>Project management and collaboration</span></div>
+          <div class="cap-item"><span class="cap-check">&#10004;</span><span>Full LMS for courses and coaching</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PREMIER GROWTH SERVICES ===== -->
+<section id="premier-services" class="section observe-section">
+  <div class="container">
+    <p class="section-label">Expert-Led Solutions</p>
+    <h2 class="section-title">Premier <span class="text-gold-gradient">Growth Services</span></h2>
+    <p class="section-desc">Premium services that help your organization increase profitability, regain time, and take control of growth.</p>
+
+    <div class="cards-grid-5">
+      <a href="https://book.thebusinessnavigators.com" target="_blank" rel="noopener noreferrer" style="display:block">
+        <div class="card">
+          <div class="card-bar"></div>
+          <div class="card-icon-area"><div class="card-icon"><svg class="icon-svg" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg></div></div>
+          <div class="card-divider"></div>
+          <div class="card-title">Recruiting Services</div>
+          <div class="card-desc">Using our advanced Applicant Tracking System, we streamline sourcing, screening, and selection to deliver top tier candidates faster while saving your organization time and money.</div>
+          <div class="card-bar"></div>
+        </div>
+      </a>
+      <a href="https://book.thebusinessnavigators.com" target="_blank" rel="noopener noreferrer" style="display:block">
+        <div class="card">
+          <div class="card-bar"></div>
+          <div class="card-icon-area"><div class="card-icon"><svg class="icon-svg" viewBox="0 0 24 24"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg></div></div>
+          <div class="card-divider"></div>
+          <div class="card-title">Virtual Assistant Services</div>
+          <div class="card-desc">Delegate with confidence. Our professional virtual assistants handle daily operations so you can focus on strategy, leadership, and growth.</div>
+          <div class="card-bar"></div>
+        </div>
+      </a>
+      <a href="https://book.thebusinessnavigators.com" target="_blank" rel="noopener noreferrer" style="display:block">
+        <div class="card">
+          <div class="card-bar"></div>
+          <div class="card-icon-area"><div class="card-icon"><svg class="icon-svg" viewBox="0 0 24 24"><path d="M2 4l3 12h14l3-12-5.5 4L12 2 7.5 8 2 4z"/><path d="M5 16l-1.5 6h17L19 16"/></svg></div></div>
+          <div class="card-divider"></div>
+          <div class="card-title">Fractional Executive Leadership</div>
+          <div class="card-desc">Tap into experienced leaders to strengthen operations, guide strategy, and accelerate growth exactly when you need them.</div>
+          <div class="card-bar"></div>
+        </div>
+      </a>
+      <a href="https://book.thebusinessnavigators.com" target="_blank" rel="noopener noreferrer" style="display:block">
+        <div class="card">
+          <div class="card-bar"></div>
+          <div class="card-icon-area"><div class="card-icon"><svg class="icon-svg" viewBox="0 0 24 24"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg></div></div>
+          <div class="card-divider"></div>
+          <div class="card-title">Strategy Execution</div>
+          <div class="card-desc">Move from ideas to impact with proven frameworks that align people, process, and technology to deliver sustainable growth.</div>
+          <div class="card-bar"></div>
+        </div>
+      </a>
+      <a href="https://book.thebusinessnavigators.com" target="_blank" rel="noopener noreferrer" style="display:block">
+        <div class="card">
+          <div class="card-bar"></div>
+          <div class="card-icon-area"><div class="card-icon"><svg class="icon-svg" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div></div>
+          <div class="card-divider"></div>
+          <div class="card-title">Marketing Services</div>
+          <div class="card-desc">Our team uses proprietary software to automate social posting, engage audiences, and boost ROI. Launch campaigns in minutes with no coding, track performance with real time analytics, and scale your message across 100+ languages using proven templates.</div>
+          <div class="card-bar"></div>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== HIGH-IMPACT ECOSYSTEM CALLOUT ===== -->
+<section class="section-sm observe-section">
+  <a href="https://book.thebusinessnavigators.com" target="_blank" rel="noopener noreferrer" style="display:block">
+    <div class="callout gold-glow" style="cursor:pointer">
+      <div class="callout-flex-reverse">
+        <div class="callout-icon">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--primary-fg)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        </div>
+        <div>
+          <h2>Join a Growing, <span class="text-gold-gradient">High-Impact Ecosystem</span></h2>
+          <p>Our ecosystem expands every day, but we're intentional about who we bring in. We partner with leaders, innovators, and organizations that deliver real value. If you're driven, talented, and ready to help build something exceptional, we want to hear from you.</p>
+        </div>
+      </div>
+    </div>
+  </a>
+</section>
+
+<!-- ===== TESTIMONIALS ===== -->
+<section id="testimonials" class="section observe-section">
+  <div class="container">
+    <p class="section-label">Testimonials</p>
+    <h2 class="section-title">Trusted by <span class="text-gold-gradient">Industry Leaders</span></h2>
+    <div style="margin-bottom:5rem"></div>
+
+    <div class="testimonials-grid">
+      <div class="testimonial">
+        <svg class="quote-icon" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V21z"/><path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3z"/></svg>
+        <p class="quote-text">&ldquo;The Navigator's Circle transformed how we operate. Our team productivity increased by 6X within the first quarter.&rdquo;</p>
+        <p class="quote-name">Executive Leader</p>
+        <p class="quote-role">Fortune 500 Company</p>
+      </div>
+      <div class="testimonial">
+        <svg class="quote-icon" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V21z"/><path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3z"/></svg>
+        <p class="quote-text">&ldquo;Finally, one platform that does it all. The integration of AI and automation tools is a game-changer for scaling.&rdquo;</p>
+        <p class="quote-name">Business Owner</p>
+        <p class="quote-role">Tech Startup Founder</p>
+      </div>
+      <div class="testimonial">
+        <svg class="quote-icon" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V21z"/><path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3z"/></svg>
+        <p class="quote-text">&ldquo;The level of sophistication and polish in these tools rivals enterprise solutions at a fraction of the complexity.&rdquo;</p>
+        <p class="quote-name">Operations Director</p>
+        <p class="quote-role">Private Equity Firm</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== ECOSYSTEM ===== -->
+<section id="ecosystem" class="section-sm observe-section">
+  <div class="container-lg" style="text-align:center">
+    <p class="section-label">Partners</p>
+    <h2 class="section-title">Part of a Powerful <span class="text-gold-gradient">Ecosystem</span></h2>
+    <div style="margin-bottom:4rem"></div>
+    <div class="partners-wrap">
+      <div class="partner-badge"><span>Master Coach Headquarters</span></div>
+      <div class="partner-badge"><span>Valor &amp; Ventures Media</span></div>
+      <div class="partner-badge"><span>Founders &amp; Ventures Alliance</span></div>
+      <div class="partner-badge"><span>Future Proof Life</span></div>
+      <div class="partner-badge"><span>Paul Bickford Solutions "Career Mastery"</span></div>
+      <div class="partner-badge"><span>Veteran Coaching Network</span></div>
+      <div class="partner-badge"><span>Evolve Pathway</span></div>
+      <div class="partner-badge"><span>Nashville Analytics</span></div>
+      <div class="partner-badge"><span>Dadan</span></div>
+      <div class="partner-badge"><span>Luna Cal</span></div>
+      <div class="partner-badge"><span>Engine Mailer</span></div>
+      <div class="partner-badge"><span>MEETn</span></div>
+      <div class="partner-badge"><span>American Skyport</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PHILANTHROPY ===== -->
+<section class="section-sm observe-section" style="padding-top:4rem;padding-bottom:4rem">
+  <div style="text-align:center">
+    <div class="philanthropy-pill">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+      <span>Our Philanthropy: <a href="https://americanheroesequineconnection.org/" target="_blank" rel="noopener noreferrer">American Heroes Equine Connection, Incorporated</a></span>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FINAL CTA ===== -->
+<section id="cta" class="section cta-section observe-section">
+  <div class="cta-bg"></div>
+  <div class="cta-content">
+    <h2 class="cta-title">Ready to Navigate Your <span class="text-gold-gradient">Next Level?</span></h2>
+    <p class="cta-desc">Join the exclusive circle of business leaders who refuse to settle for ordinary. Your digital transformation starts here.</p>
+    <div class="cta-buttons">
+      <a href="https://book.thebusinessnavigators.com" target="_blank" rel="noopener noreferrer" class="btn-gold-lg gold-glow-strong">Join The Navigator's Circle Now</a>
+      <a href="https://blog.thebusinessnavigators.com" target="_blank" rel="noopener noreferrer" class="btn-outline-lg">Join Our Newsletter</a>
+    </div>
+    <p class="cta-note">Limited spots available for founding members.</p>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer">
+  <div class="footer-inner">
+    <p class="footer-powered">Powered by <span class="text-gold-gradient" style="font-weight:600">Business Navigators</span></p>
+    <div class="footer-links">
+      <a href="#" class="footer-link">Privacy Policy</a>
+      <a href="#" class="footer-link">Terms</a>
+      <a href="#" class="footer-link">Contact</a>
+    </div>
+    <p class="footer-copy">&copy; 2026 The Navigator's Circle</p>
+  </div>
+</footer>
+
+<script>
+// Smooth scroll
+function scrollTo(selector) {
+  var el = document.querySelector(selector);
+  if (el) el.scrollIntoView({ behavior: 'smooth' });
+  var mm = document.getElementById('mobile-menu');
+  if (mm) mm.classList.remove('open');
+  document.getElementById('menu-icon').style.display = '';
+  document.getElementById('close-icon').style.display = 'none';
+}
+
+// Mobile menu
+function toggleMenu() {
+  var mm = document.getElementById('mobile-menu');
+  var isOpen = mm.classList.toggle('open');
+  document.getElementById('menu-icon').style.display = isOpen ? 'none' : '';
+  document.getElementById('close-icon').style.display = isOpen ? '' : 'none';
+}
+
+// Scroll animations (IntersectionObserver)
+document.addEventListener('DOMContentLoaded', function() {
+  var sections = document.querySelectorAll('.observe-section');
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('fade-visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  sections.forEach(function(s) {
+    s.classList.add('fade-hidden');
+    observer.observe(s);
+  });
+
+  // Gold particles
+  var canvas = document.getElementById('hero-canvas');
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d');
+  if (!ctx) return;
+  var particles = [];
+  function resize() { canvas.width = canvas.offsetWidth; canvas.height = canvas.offsetHeight; }
+  resize();
+  window.addEventListener('resize', resize);
+  function spawn() {
+    if (particles.length < 60) {
+      particles.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        vx: (Math.random() - 0.5) * 0.3,
+        vy: -Math.random() * 0.5 - 0.1,
+        size: Math.random() * 2 + 0.5,
+        opacity: Math.random() * 0.6 + 0.2,
+        life: Math.random() * 200 + 100
+      });
+    }
+  }
+  function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    spawn();
+    for (var i = particles.length - 1; i >= 0; i--) {
+      var p = particles[i];
+      p.x += p.vx; p.y += p.vy; p.life--; p.opacity *= 0.998;
+      if (p.life <= 0 || p.opacity < 0.01) { particles.splice(i, 1); continue; }
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+      ctx.fillStyle = 'hsla(43,76%,52%,' + p.opacity + ')';
+      ctx.fill();
+    }
+    requestAnimationFrame(animate);
+  }
+  animate();
+});
+</script>
+</body>
+</html>
